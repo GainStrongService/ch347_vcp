@@ -381,6 +381,10 @@ static void ch34x_usb_free_device(struct ch34x_device *ch34x_dev)
 	kfree(ch34x_dev);
 }
 
+static const struct mfd_cell ch347_devs[] = {
+	{ .name = "ch34x-spi",  .of_compatible = "wch,ch34x-mfd-spi" }
+};
+
 static int ch34x_usb_probe(struct usb_interface *intf, const struct usb_device_id *id)
 {
 	struct usb_device *usb_dev = usb_get_dev(interface_to_usbdev(intf));
@@ -390,6 +394,7 @@ static int ch34x_usb_probe(struct usb_interface *intf, const struct usb_device_i
 	int i;
 	int ret;
 	int length;
+	struct device *dev = &intf->dev;
 
 	DEV_DBG(&intf->dev, "connect device");
 
@@ -475,13 +480,11 @@ static int ch34x_usb_probe(struct usb_interface *intf, const struct usb_device_i
 	if (ret < 0)
 		goto error1;
 
-	ret = ch34x_mphsi_spi_probe(ch34x_dev);
-	if (ret < 0)
-		goto error1;
-
-	ret = ch34x_spi_probe(ch34x_dev);
-	if (ret < 0)
+	ret = mfd_add_hotplug_devices(dev, ch347_devs, 1);
+	if (ret != 0) {
+		dev_err(dev, "%s: Failed to add MFD devices to core: %d", __func__, ret);
 		goto error2;
+	}
 
 	ret = ch34x_mphsi_i2c_probe(ch34x_dev);
 	if (ret < 0)
@@ -527,9 +530,8 @@ error5:
 error4:
 	ch34x_mphsi_i2c_remove(ch34x_dev);
 error3:
-	ch34x_spi_remove(ch34x_dev);
 error2:
-	ch34x_mphsi_spi_remove(ch34x_dev);
+	mfd_remove_devices(&intf->dev);
 error1:
 	ch34x_cfg_remove(ch34x_dev);
 	ida_simple_remove(&ch34x_devid_ida, ch34x_dev->id);
@@ -599,8 +601,7 @@ static void ch34x_usb_disconnect(struct usb_interface *intf)
 	if ((ch34x_dev->firmver >= 0x0341) || (ch34x_dev->chiptype == CHIP_CH347F))
 		ch347_irq_remove(ch34x_dev);
 	ch34x_mphsi_i2c_remove(ch34x_dev);
-	ch34x_spi_remove(ch34x_dev);
-	ch34x_mphsi_spi_remove(ch34x_dev);
+	mfd_remove_devices(&intf->dev);
 	ch34x_cfg_remove(ch34x_dev);
 	ida_simple_remove(&ch34x_devid_ida, ch34x_dev->id);
 	if (ch34x_dev->bulkin_buf)
