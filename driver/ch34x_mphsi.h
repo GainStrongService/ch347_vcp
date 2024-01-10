@@ -75,7 +75,7 @@
 #define MOSI_BIT (1 << 5)
 #define MISO_BIT (1 << 7)
 
-#define CH347_CS_NUM 2
+#define CH347_CS_NUM 1
 
 #define CH347_USB_MAX_BULK_SIZE 510
 #define CH347_USB_BULK_EPSIZE	512
