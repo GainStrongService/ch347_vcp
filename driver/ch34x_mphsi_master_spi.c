@@ -36,7 +36,7 @@ struct spi_board_info ch341_spi_device_template = {
 };
 
 struct spi_board_info ch347_spi_device_template = {
-	.modalias = "spidev",
+	.modalias = "fb_st7796u",
 	.max_speed_hz = CH347_SPI_MAX_FREQ,
 	.bus_num = 0,
 	.chip_select = 0,
