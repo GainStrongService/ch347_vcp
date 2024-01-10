@@ -17,7 +17,6 @@
 #include <linux/spi/spi.h>
 #include <linux/irq.h>
 #include <linux/platform_device.h>
-#include <linux/mfd/core.h>
 #include <linux/idr.h>
 #include <linux/usb.h>
 #include <linux/i2c.h>

@@ -74,7 +74,7 @@ static bool ch347_irq_control(struct ch34x_device *ch34x_dev, u8 gpioindex, bool
 
 static void ch347_irq_enable_control(struct irq_data *data, bool enable)
 {
-	struct  *ch34x_dev;
+	struct ch34x_device *ch34x_dev;
 	int irq;
 	u8 gpioindex;
 

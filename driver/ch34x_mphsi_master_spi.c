@@ -1167,16 +1167,3 @@ void ch34x_spi_remove(struct ch34x_device *ch34x_dev)
 
 	return;
 }
-
-static struct platform_driver ch34x_spi_driver = {
-	.driver.name	= "ch34x-spi",
-	.probe		= ch34x_spi_probe,
-	.remove	= ch34x_spi_remove,
-};
-
-module_platform_driver(ch34x_spi_driver);
-
-MODULE_DESCRIPTION("Driver for the QinHeng Electronics CH347 SPI master interface");
-MODULE_AUTHOR("Alexey Starikovskiy <aystarik@gmail.com>");
-MODULE_LICENSE("GPL v2");
-MODULE_ALIAS("platform:ch34x-spi");
