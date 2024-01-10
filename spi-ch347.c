@@ -259,6 +259,9 @@ static int ch347_transfer_one_message(struct spi_master *master, struct spi_mess
 	m->status = 0;
 	m->actual_length = 0;
 
+    dev_dbg(&master->dev, "ch347_transfer_one_message: transferring %u bytes start\n", m->actual_length);
+
+
 	mutex_lock(&ch347->io_mutex);
 
 	if (xfer->speed_hz != ch347->speed || (spi->mode & (SPI_CPHA|SPI_CPOL|SPI_LSB_FIRST)) != ch347->mode) {
@@ -299,6 +302,9 @@ static int ch347_transfer_one_message(struct spi_master *master, struct spi_mess
 msg_done:
 	mutex_unlock(&ch347->io_mutex);
 	spi_finalize_current_message(master);
+
+    dev_dbg(&master->dev, "ch347_transfer_one_message: transferring %u bytes finish\n", m->actual_length);
+
 	return 0;
 }
 
