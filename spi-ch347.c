@@ -12,6 +12,7 @@
 #include <linux/slab.h>
 #include <linux/spi/spi.h>
 #include <linux/platform_device.h>
+#include <linux/of_device.h>
 
 #include "ch347.h"
 
@@ -487,8 +488,17 @@ static int ch347_spi_remove(struct platform_device *pdev)
 	return 0;
 }
 
+static const struct of_device_id ch347_spi_of_match[] = {
+    { .compatible = "wch,ch347-mfd-spi" },
+    { /* sentinel */ }
+};
+MODULE_DEVICE_TABLE(of, ch347_spi_of_match);
+
 static struct platform_driver ch347_spi_driver = {
-	.driver.name	= "ch347-spi",
+    .driver = {
+        .name = "ch347-spi",  // 驱动程序的名称
+        .of_match_table = ch347_spi_of_match,  // 设备树兼容性表
+    },
 	.probe		= ch347_spi_probe,
 	.remove	= ch347_spi_remove,
 };
