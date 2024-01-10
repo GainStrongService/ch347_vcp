@@ -15,7 +15,6 @@
 #include "ch34x_mphsi.h"
 
 #define SPIDEV
-#undef SPIDEV
 
 #define ch34x_spi_maser_to_dev(m) *((struct ch34x_device **)spi_master_get_devdata(m))
 
