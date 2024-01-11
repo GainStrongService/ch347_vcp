@@ -202,7 +202,7 @@ bool spicfg_to_hwcfg(mspi_cfgs *spicfg, stream_hw_cfgs *hwcfg)
 		return false;
 
 	spicfg->ibyteorder &= 0x01;
-	hwcfg->spi_initcfg.spi_firstbit = 0x00;
+	hwcfg->spi_initcfg.spi_firstbit = 0x80;
 
 	switch (spicfg->imode) {
 	case 0:
