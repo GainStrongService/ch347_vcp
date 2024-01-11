@@ -1005,7 +1005,7 @@ static int ch347_spi_setup(struct spi_device *spi)
 		}
 	}
 
-	DEV_DBG(CH34X_USBDEV, "spimode:%d, max_speed_hz: %d, scale: %d, iclock: %d\n", spicfg.imode, spi->max_speed_hz,
+	DEV_INFO(CH34X_USBDEV, "spimode:%d, max_speed_hz: %d, scale: %d, iclock: %d\n", spicfg.imode, spi->max_speed_hz,
 		scale, spicfg.iclock);
 
 	if (spi->mode & SPI_LSB_FIRST)
