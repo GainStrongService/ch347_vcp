@@ -1005,16 +1005,13 @@ static int ch347_spi_setup(struct spi_device *spi)
 		}
 	}
 
-    // 强制设置为 MSB-first
-    spi->mode &= ~SPI_LSB_FIRST;
-
 	DEV_INFO(CH34X_USBDEV, "spimode:%d, max_speed_hz: %d, scale: %d, iclock: %d\n", spicfg.imode, spi->max_speed_hz,
 		scale, spicfg.iclock);
 
 	if (spi->mode & SPI_LSB_FIRST)
-		spicfg.ibyteorder = 0;
-	else
 		spicfg.ibyteorder = 1;
+	else
+		spicfg.ibyteorder = 0;
 
 	/* BIT0：CS0/1 polar control, 0：low active, 1：high active */
 	if (spi->mode & SPI_CS_HIGH) {
