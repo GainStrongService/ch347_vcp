@@ -441,7 +441,7 @@ static int ch341_spi_bitbang(struct ch34x_device *ch34x_dev, struct spi_device *
 	u8 DATA = ch34x_dev->gpio_io_data & ch34x_dev->gpio_mask;
 
 	u8 mode = spi->mode & SPI_MODE_3;
-	bool lsb = spi->mode & SPI_MSB_FIRST;
+	bool lsb = spi->mode & SPI_LSB_FIRST;
 
 	DEV_DBG(CH34X_USBDEV, "start");
 
@@ -492,7 +492,7 @@ static int ch341_spi_bitbang(struct ch34x_device *ch34x_dev, struct spi_device *
 
 static int ch341_spi_native(struct ch34x_device *ch34x_dev, struct spi_device *spi, const u8 *tx, u8 *rx, int len)
 {
-	bool lsb = spi->mode & SPI_MSB_FIRST;
+	bool lsb = spi->mode & SPI_LSB_FIRST;
 	int bytes_to_copy;
 	int result = 0;
 	int i;
@@ -1008,7 +1008,7 @@ static int ch347_spi_setup(struct spi_device *spi)
 	DEV_INFO(CH34X_USBDEV, "spimode:%d, max_speed_hz: %d, scale: %d, iclock: %d\n", spicfg.imode, spi->max_speed_hz,
 		scale, spicfg.iclock);
 
-	if (spi->mode & SPI_MSB_FIRST)
+	if (spi->mode & SPI_LSB_FIRST)
 		spicfg.ibyteorder = 0;
 	else
 		spicfg.ibyteorder = 1;
@@ -1087,7 +1087,7 @@ int ch34x_spi_probe(struct ch34x_device *ch34x_dev)
 		ch34x_dev->master->num_chipselect = CH341_SPI_MAX_NUM_DEVICES;
 	else
 		ch34x_dev->master->num_chipselect = CH347_SPI_MAX_NUM_DEVICES;
-	ch34x_dev->master->mode_bits = SPI_MODE_3 | SPI_MSB_FIRST | SPI_CS_HIGH;
+	ch34x_dev->master->mode_bits = SPI_MODE_3 | SPI_LSB_FIRST | SPI_CS_HIGH;
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 15, 0)
 	ch34x_dev->master->flags = SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX;
 #endif
