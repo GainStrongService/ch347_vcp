@@ -245,6 +245,16 @@ bool spicfg_to_hwcfg(mspi_cfgs *spicfg, stream_hw_cfgs *hwcfg)
 	return true;
 }
 
+void print_hwcfg_hex(const stream_hw_cfgs *hwcfg) {
+    pr_info("stream_hw_cfgs data in hexadecimal:\n");
+
+    for (int i = 0; i < sizeof(stream_hw_cfgs); i++) {
+        pr_info("%02X ", ((unsigned char *)hwcfg)[i]);
+    }
+
+    pr_info("\n");
+}
+
 /**
  * ch347spi_init - SPI interface initialization
  */
@@ -276,6 +286,10 @@ bool ch347spi_init(struct ch34x_device *ch34x_dev, mspi_cfgs *spicfg)
 			if (ch34x_dev->bulkin_buf[USB20_CMD_HEADER] == 0) {
 				memcpy(&ch34x_dev->spicfg, spicfg, sizeof(mspi_cfgs));
 				memcpy(&ch34x_dev->hwcfg, &hwcfg, sizeof(stream_hw_cfgs));
+
+				// 打印 hwcfg
+				print_hwcfg_hex(&hwcfg);
+
 				return true;
 			}
 		}
