@@ -1005,6 +1005,9 @@ static int ch347_spi_setup(struct spi_device *spi)
 		}
 	}
 
+    // 强制设置为 MSB-first
+    spi->mode &= ~SPI_LSB_FIRST;
+
 	DEV_INFO(CH34X_USBDEV, "spimode:%d, max_speed_hz: %d, scale: %d, iclock: %d\n", spicfg.imode, spi->max_speed_hz,
 		scale, spicfg.iclock);
 
