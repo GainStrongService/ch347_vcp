@@ -15,7 +15,6 @@
 #include "ch34x_mphsi.h"
 
 #define SYSFS_GPIO
-#undef SYSFS_GPIO
 
 /* parameters */
 static int param_gpio_base = -1;
