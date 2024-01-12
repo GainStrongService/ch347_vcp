@@ -202,7 +202,7 @@ bool spicfg_to_hwcfg(mspi_cfgs *spicfg, stream_hw_cfgs *hwcfg)
 		return false;
 
 	spicfg->ibyteorder &= 0x01;
-	hwcfg->spi_initcfg.spi_firstbit = 0x80;
+	hwcfg->spi_initcfg.spi_firstbit = spicfg->ibyteorder ? 0x00 : 0x80;
 
 	switch (spicfg->imode) {
 	case 0:
@@ -226,9 +226,7 @@ bool spicfg_to_hwcfg(mspi_cfgs *spicfg, stream_hw_cfgs *hwcfg)
 		hwcfg->spi_initcfg.s_spi_cpol = SPI_CPOL_High;
 		break;
 	}
-	hwcfg->spi_initcfg.s_spi_cpha = __cpu_to_le16(hwcfg->spi_initcfg.s_spi_cpha);
-	hwcfg->spi_initcfg.s_spi_cpol = __cpu_to_le16(hwcfg->spi_initcfg.s_spi_cpol);
-	hwcfg->spi_initcfg.spi_baudrate_scale = __cpu_to_le16(spicfg->iclock * 8);
+	hwcfg->spi_initcfg.spi_baudrate_scale = spicfg->iclock * 8;
 	hwcfg->spi_outdef = spicfg->ispi_out_def;
 	hwcfg->spi_rw_interval = spicfg->ispi_rw_interval;
 
@@ -242,17 +240,18 @@ bool spicfg_to_hwcfg(mspi_cfgs *spicfg, stream_hw_cfgs *hwcfg)
 	else
 		hwcfg->misc_cfg &= ~0x40;
 
+	hwcfg->spi_rw_interval = htole16(hwcfg->spi_rw_interval);
+	hwcfg->spi_initcfg.spi_direction = htole16(hwcfg->spi_initcfg.spi_direction);
+	hwcfg->spi_initcfg.spi_mode =  htole16(hwcfg->spi_initcfg.spi_mode);
+	hwcfg->spi_initcfg.spi_datasize = htole16(hwcfg->spi_initcfg.spi_datasize);
+	hwcfg->spi_initcfg.s_spi_cpol =  htole16(hwcfg->spi_initcfg.s_spi_cpol);
+	hwcfg->spi_initcfg.s_spi_cpha =  htole16(hwcfg->spi_initcfg.s_spi_cpha);
+	hwcfg->spi_initcfg.spi_nss =  htole16(hwcfg->spi_initcfg.spi_nss);
+	hwcfg->spi_initcfg.spi_baudrate_scale =  htole16(hwcfg->spi_initcfg.spi_baudrate_scale);
+	hwcfg->spi_initcfg.spi_firstbit =  htole16(hwcfg->spi_initcfg.spi_firstbit);
+	hwcfg->spi_initcfg.spi_crc_poly =  htole16(hwcfg->spi_initcfg.spi_crc_poly);
+
 	return true;
-}
-
-void print_hwcfg_hex(const stream_hw_cfgs *hwcfg) {
-    pr_info("stream_hw_cfgs data in hexadecimal:\n");
-
-    for (int i = 0; i < sizeof(stream_hw_cfgs); i++) {
-        pr_info("%02X ", ((unsigned char *)hwcfg)[i]);
-    }
-
-    pr_info("\n");
 }
 
 /**
@@ -286,10 +285,6 @@ bool ch347spi_init(struct ch34x_device *ch34x_dev, mspi_cfgs *spicfg)
 			if (ch34x_dev->bulkin_buf[USB20_CMD_HEADER] == 0) {
 				memcpy(&ch34x_dev->spicfg, spicfg, sizeof(mspi_cfgs));
 				memcpy(&ch34x_dev->hwcfg, &hwcfg, sizeof(stream_hw_cfgs));
-
-				// 打印 hwcfg
-				print_hwcfg_hex(&hwcfg);
-
 				return true;
 			}
 		}
@@ -1019,13 +1014,13 @@ static int ch347_spi_setup(struct spi_device *spi)
 		}
 	}
 
-	DEV_INFO(CH34X_USBDEV, "spimode:%d, max_speed_hz: %d, scale: %d, iclock: %d\n", spicfg.imode, spi->max_speed_hz,
+	DEV_DBG(CH34X_USBDEV, "spimode:%d, max_speed_hz: %d, scale: %d, iclock: %d\n", spicfg.imode, spi->max_speed_hz,
 		scale, spicfg.iclock);
 
 	if (spi->mode & SPI_LSB_FIRST)
-		spicfg.ibyteorder = 1;
-	else
 		spicfg.ibyteorder = 0;
+	else
+		spicfg.ibyteorder = 1;
 
 	/* BIT0：CS0/1 polar control, 0：low active, 1：high active */
 	if (spi->mode & SPI_CS_HIGH) {
