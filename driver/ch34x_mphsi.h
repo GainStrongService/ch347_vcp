@@ -83,7 +83,7 @@
 
 #define CH347_MAX_GPIOS	   8
 #define CH347F_MPHSI_GPIOS 8
-#define CH347T_MPHSI_GPIOS 3
+#define CH347T_MPHSI_GPIOS 5
 
 #define CH347_CMD_SPI_STREAM 0xA8 /* CH347 SPI command */
 
