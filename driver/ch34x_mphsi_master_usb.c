@@ -526,11 +526,11 @@ error6:
 error5:
 	if ((ch34x_dev->firmver >= 0x0341) || (ch34x_dev->chiptype == CHIP_CH347F))
 		ch347_irq_remove(ch34x_dev);
-/*
 error4:
+/*
 	ch34x_mphsi_i2c_remove(ch34x_dev);
-*/
 error3:
+*/
 	ch34x_spi_remove(ch34x_dev);
 error2:
 	ch34x_mphsi_spi_remove(ch34x_dev);
