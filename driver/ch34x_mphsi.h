@@ -87,7 +87,7 @@
 
 #define CH347_CMD_SPI_STREAM 0xA8 /* CH347 SPI command */
 
-#define CH347_SPI_MAX_NUM_DEVICES   2
+#define CH347_SPI_MAX_NUM_DEVICES   1
 #define CH347_SPI_BUS_NUM	    0
 #define CH347_SPI_MODE		    SPI_MODE_0
 #define CH347_SPI_MIN_FREQ	    218750
