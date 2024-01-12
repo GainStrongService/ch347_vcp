@@ -240,16 +240,16 @@ bool spicfg_to_hwcfg(mspi_cfgs *spicfg, stream_hw_cfgs *hwcfg)
 	else
 		hwcfg->misc_cfg &= ~0x40;
 
-	hwcfg->spi_rw_interval = htole16(hwcfg->spi_rw_interval);
-	hwcfg->spi_initcfg.spi_direction = htole16(hwcfg->spi_initcfg.spi_direction);
-	hwcfg->spi_initcfg.spi_mode =  htole16(hwcfg->spi_initcfg.spi_mode);
-	hwcfg->spi_initcfg.spi_datasize = htole16(hwcfg->spi_initcfg.spi_datasize);
-	hwcfg->spi_initcfg.s_spi_cpol =  htole16(hwcfg->spi_initcfg.s_spi_cpol);
-	hwcfg->spi_initcfg.s_spi_cpha =  htole16(hwcfg->spi_initcfg.s_spi_cpha);
-	hwcfg->spi_initcfg.spi_nss =  htole16(hwcfg->spi_initcfg.spi_nss);
-	hwcfg->spi_initcfg.spi_baudrate_scale =  htole16(hwcfg->spi_initcfg.spi_baudrate_scale);
-	hwcfg->spi_initcfg.spi_firstbit =  htole16(hwcfg->spi_initcfg.spi_firstbit);
-	hwcfg->spi_initcfg.spi_crc_poly =  htole16(hwcfg->spi_initcfg.spi_crc_poly);
+	hwcfg->spi_rw_interval = cpu_to_le16(hwcfg->spi_rw_interval);
+	hwcfg->spi_initcfg.spi_direction = cpu_to_le16(hwcfg->spi_initcfg.spi_direction);
+	hwcfg->spi_initcfg.spi_mode =  cpu_to_le16(hwcfg->spi_initcfg.spi_mode);
+	hwcfg->spi_initcfg.spi_datasize = cpu_to_le16(hwcfg->spi_initcfg.spi_datasize);
+	hwcfg->spi_initcfg.s_spi_cpol =  cpu_to_le16(hwcfg->spi_initcfg.s_spi_cpol);
+	hwcfg->spi_initcfg.s_spi_cpha =  cpu_to_le16(hwcfg->spi_initcfg.s_spi_cpha);
+	hwcfg->spi_initcfg.spi_nss =  cpu_to_le16(hwcfg->spi_initcfg.spi_nss);
+	hwcfg->spi_initcfg.spi_baudrate_scale =  cpu_to_le16(hwcfg->spi_initcfg.spi_baudrate_scale);
+	hwcfg->spi_initcfg.spi_firstbit =  cpu_to_le16(hwcfg->spi_initcfg.spi_firstbit);
+	hwcfg->spi_initcfg.spi_crc_poly =  cpu_to_le16(hwcfg->spi_initcfg.spi_crc_poly);
 
 	return true;
 }

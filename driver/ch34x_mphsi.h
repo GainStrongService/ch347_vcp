@@ -21,6 +21,7 @@
 #include <linux/usb.h>
 #include <linux/i2c.h>
 #include <linux/gpio.h>
+#include <asm/byteorder.h>
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(3, 17, 0)
 #include <linux/gpio/machine.h>
 #endif
