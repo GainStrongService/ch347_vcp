@@ -484,11 +484,11 @@ static int ch34x_usb_probe(struct usb_interface *intf, const struct usb_device_i
 	ret = ch34x_spi_probe(ch34x_dev);
 	if (ret < 0)
 		goto error2;
-/*
+
 	ret = ch34x_mphsi_i2c_probe(ch34x_dev);
 	if (ret < 0)
 		goto error3;
-*/
+
 	if ((ch34x_dev->firmver >= 0x0341) || (ch34x_dev->chiptype == CHIP_CH347F)) {
 		ret = ch347_irq_probe(ch34x_dev);
 		if (ret < 0)
@@ -602,9 +602,7 @@ static void ch34x_usb_disconnect(struct usb_interface *intf)
 	ch34x_mphsi_gpio_remove(ch34x_dev);
 	if ((ch34x_dev->firmver >= 0x0341) || (ch34x_dev->chiptype == CHIP_CH347F))
 		ch347_irq_remove(ch34x_dev);
-/*
 	ch34x_mphsi_i2c_remove(ch34x_dev);
-*/
 	ch34x_spi_remove(ch34x_dev);
 	ch34x_mphsi_spi_remove(ch34x_dev);
 	ch34x_cfg_remove(ch34x_dev);
