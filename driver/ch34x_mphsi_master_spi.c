@@ -15,7 +15,6 @@
 #include "ch34x_mphsi.h"
 
 #define SPIDEV
-#undef SPIDEV
 
 #define ch34x_spi_maser_to_dev(m) *((struct ch34x_device **)spi_master_get_devdata(m))
 
@@ -37,7 +36,7 @@ struct spi_board_info ch341_spi_device_template = {
 };
 
 struct spi_board_info ch347_spi_device_template = {
-	.modalias = "spidev",
+	.modalias = "fb_st7796u",
 	.max_speed_hz = CH347_SPI_MAX_FREQ,
 	.bus_num = 0,
 	.chip_select = 0,
@@ -227,9 +226,7 @@ bool spicfg_to_hwcfg(mspi_cfgs *spicfg, stream_hw_cfgs *hwcfg)
 		hwcfg->spi_initcfg.s_spi_cpol = SPI_CPOL_High;
 		break;
 	}
-	hwcfg->spi_initcfg.s_spi_cpha = __cpu_to_le16(hwcfg->spi_initcfg.s_spi_cpha);
-	hwcfg->spi_initcfg.s_spi_cpol = __cpu_to_le16(hwcfg->spi_initcfg.s_spi_cpol);
-	hwcfg->spi_initcfg.spi_baudrate_scale = __cpu_to_le16(spicfg->iclock * 8);
+	hwcfg->spi_initcfg.spi_baudrate_scale = spicfg->iclock * 8;
 	hwcfg->spi_outdef = spicfg->ispi_out_def;
 	hwcfg->spi_rw_interval = spicfg->ispi_rw_interval;
 
@@ -242,6 +239,17 @@ bool spicfg_to_hwcfg(mspi_cfgs *spicfg, stream_hw_cfgs *hwcfg)
 		hwcfg->misc_cfg |= 0x40;
 	else
 		hwcfg->misc_cfg &= ~0x40;
+
+	hwcfg->spi_rw_interval = cpu_to_le16(hwcfg->spi_rw_interval);
+	hwcfg->spi_initcfg.spi_direction = cpu_to_le16(hwcfg->spi_initcfg.spi_direction);
+	hwcfg->spi_initcfg.spi_mode =  cpu_to_le16(hwcfg->spi_initcfg.spi_mode);
+	hwcfg->spi_initcfg.spi_datasize = cpu_to_le16(hwcfg->spi_initcfg.spi_datasize);
+	hwcfg->spi_initcfg.s_spi_cpol =  cpu_to_le16(hwcfg->spi_initcfg.s_spi_cpol);
+	hwcfg->spi_initcfg.s_spi_cpha =  cpu_to_le16(hwcfg->spi_initcfg.s_spi_cpha);
+	hwcfg->spi_initcfg.spi_nss =  cpu_to_le16(hwcfg->spi_initcfg.spi_nss);
+	hwcfg->spi_initcfg.spi_baudrate_scale =  cpu_to_le16(hwcfg->spi_initcfg.spi_baudrate_scale);
+	hwcfg->spi_initcfg.spi_firstbit =  cpu_to_le16(hwcfg->spi_initcfg.spi_firstbit);
+	hwcfg->spi_initcfg.spi_crc_poly =  cpu_to_le16(hwcfg->spi_initcfg.spi_crc_poly);
 
 	return true;
 }
@@ -1137,8 +1145,7 @@ int ch34x_spi_probe(struct ch34x_device *ch34x_dev)
 	for (i = 0; i < ch34x_dev->slave_num; i++) {
 		ch34x_spi_devices[i].bus_num = ch34x_dev->master->bus_num;
 		if ((ch34x_dev->slaves[i] = spi_new_device(ch34x_dev->master, &ch34x_spi_devices[i]))) {
-			DEV_INFO(CH34X_USBDEV, "SPI device /dev/spidev%d.%d created", ch34x_dev->master->bus_num,
-				 ch34x_spi_devices[i].chip_select);
+			DEV_INFO(CH34X_USBDEV, "SPI device %s created",  ch34x_spi_devices[i].modalias);
 		}
 	}
 #endif

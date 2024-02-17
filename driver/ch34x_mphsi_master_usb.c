@@ -40,7 +40,8 @@ struct ch341_pin_config ch341_board_config[CH341_CS_NUM] = {
 
 struct ch347_pin_config ch347t_board_config[CH347T_MPHSI_GPIOS] = {
 	{ 15, "gpio4", 4, GPIO_MODE_OUT, true },
-	{ 2, "gpio6", 6, GPIO_MODE_IN, true },
+	{ 9, "gpio5", 5, GPIO_MODE_OUT, true },    // SPI CS1
+	{ 2, "gpio6", 6, GPIO_MODE_OUT, true },    // CTS1
 	{ 13, "gpio7", 7, GPIO_MODE_OUT, true },
 };
 
