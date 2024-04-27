@@ -75,7 +75,7 @@
 #define MOSI_BIT (1 << 5)
 #define MISO_BIT (1 << 7)
 
-#define CH347_CS_NUM 2
+#define CH347_CS_NUM 1
 
 #define CH347_USB_MAX_BULK_SIZE 510
 #define CH347_USB_BULK_EPSIZE	512
@@ -83,11 +83,11 @@
 
 #define CH347_MAX_GPIOS	   8
 #define CH347F_MPHSI_GPIOS 8
-#define CH347T_MPHSI_GPIOS 3
+#define CH347T_MPHSI_GPIOS 4
 
 #define CH347_CMD_SPI_STREAM 0xA8 /* CH347 SPI command */
 
-#define CH347_SPI_MAX_NUM_DEVICES   2
+#define CH347_SPI_MAX_NUM_DEVICES   1
 #define CH347_SPI_BUS_NUM	    0
 #define CH347_SPI_MODE		    SPI_MODE_0
 #define CH347_SPI_MIN_FREQ	    218750
