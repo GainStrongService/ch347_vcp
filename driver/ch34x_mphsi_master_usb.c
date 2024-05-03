@@ -384,6 +384,9 @@ static void ch34x_usb_free_device(struct ch34x_device *ch34x_dev)
 	kfree(ch34x_dev);
 }
 
+int ch34x_pre_reset(struct usb_interface *intf);
+int ch34x_post_reset(struct usb_interface *intf);
+
 static int ch34x_usb_probe(struct usb_interface *intf, const struct usb_device_id *id)
 {
 	struct usb_device *usb_dev = usb_get_dev(interface_to_usbdev(intf));
@@ -393,6 +396,11 @@ static int ch34x_usb_probe(struct usb_interface *intf, const struct usb_device_i
 	int i;
 	int ret;
 	int length;
+
+	DEV_INFO(CH34X_USBDEV, "reset start");
+	ch34x_pre_reset(intf);
+	ch34x_post_reset(intf);
+	DEV_INFO(CH34X_USBDEV, "reset finished");
 
 	DEV_DBG(&intf->dev, "connect device");
 
