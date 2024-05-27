@@ -15,7 +15,6 @@
 #include "ch34x_mphsi.h"
 
 #define SPIDEV
-#undef SPIDEV
 
 #define ch34x_spi_maser_to_dev(m) *((struct ch34x_device **)spi_master_get_devdata(m))
 
@@ -37,7 +36,7 @@ struct spi_board_info ch341_spi_device_template = {
 };
 
 struct spi_board_info ch347_spi_device_template = {
-	.modalias = "spidev",
+	.modalias = "fb_st7796u",
 	.max_speed_hz = CH347_SPI_MAX_FREQ,
 	.bus_num = 0,
 	.chip_select = 0,
@@ -1145,8 +1144,7 @@ int ch34x_spi_probe(struct ch34x_device *ch34x_dev)
 	for (i = 0; i < ch34x_dev->slave_num; i++) {
 		ch34x_spi_devices[i].bus_num = ch34x_dev->master->bus_num;
 		if ((ch34x_dev->slaves[i] = spi_new_device(ch34x_dev->master, &ch34x_spi_devices[i]))) {
-			DEV_INFO(CH34X_USBDEV, "SPI device /dev/spidev%d.%d created", ch34x_dev->master->bus_num,
-				 ch34x_spi_devices[i].chip_select);
+			DEV_INFO(CH34X_USBDEV, "SPI device %s created",  ch34x_spi_devices[i].modalias);
 		}
 	}
 #endif
