@@ -17,7 +17,7 @@
 #define SYSFS_GPIO
 
 /* parameters */
-static int param_gpio_base = -1;
+static int param_gpio_base = 100;
 module_param_named(gpio_base_num, param_gpio_base, int, 0600);
 MODULE_PARM_DESC(gpio_base_num, "GPIO master base number (if negative, dynamic allocation)");
 
