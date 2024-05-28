@@ -47,10 +47,14 @@ struct ch347_pin_config ch347t_board_config[CH347T_MPHSI_GPIOS] = {
 };
 
 struct ch347_pin_config ch347f_board_config[CH347F_MPHSI_GPIOS] = {
-	{ 17, "gpio0", 0, GPIO_MODE_IN, true },	 { 18, "gpio1", 1, GPIO_MODE_OUT, true },
-	{ 10, "gpio2", 2, GPIO_MODE_OUT, true }, { 9, "gpio3", 3, GPIO_MODE_OUT, true },
-	{ 23, "gpio4", 4, GPIO_MODE_OUT, true }, { 24, "gpio5", 5, GPIO_MODE_IN, true },
-	{ 25, "gpio6", 6, GPIO_MODE_OUT, true }, { 26, "gpio7", 7, GPIO_MODE_OUT, true },
+	{ 17, "down-led-blue",  0, GPIO_MODE_OUT, true },
+	{ 18, "gpio1",          1, GPIO_MODE_OUT, true },
+	{ 10, "down-led-green", 2, GPIO_MODE_OUT, true },
+	{ 9,  "down-led-red",   3, GPIO_MODE_OUT, true },
+	{ 23, "key-up",         4, GPIO_MODE_IN, true },
+	{ 24, "key-down",       5, GPIO_MODE_IN, true },
+	{ 25, "key-left",       6, GPIO_MODE_IN, true },
+	{ 26, "key-right",      7, GPIO_MODE_IN, true },
 };
 
 extern struct spi_board_info ch341_spi_device_template;
